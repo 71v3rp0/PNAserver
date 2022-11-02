@@ -18,7 +18,7 @@ int main()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData))
 	{
-		cerr << "WSAStartup failed";
+		cerr << "     WSAStartup failed";
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ int main()
 
 	if (getaddrinfo(NULL, "7000", &hints, &result))
 	{
-		cerr << "getaddrinfo failed";
+		cerr << "     getaddrinfo failed";
 		WSACleanup();
 		return 1;
 	}
@@ -67,7 +67,7 @@ int main()
 
 	if (listen(listenSocket, SOMAXCONN) == SOCKET_ERROR)
 	{
-		cerr << "listen failed";
+		cerr << "     Listen failed";
 		closesocket(listenSocket);
 		WSACleanup();
 		return 1;
@@ -75,7 +75,7 @@ int main()
 
 	//Accepting a Connection
 
-	cout << "Waiting for connection...";
+	cout << "     Waiting for client connection";
 
 	sockaddr_in remoteHostInfo;
 	socklen_t remoteHostInfoLen = sizeof(remoteHostInfo);
@@ -84,7 +84,7 @@ int main()
 
 	if (clientSocket == INVALID_SOCKET)
 	{
-		cerr << "accept failed";
+		cerr << "     Accept failed";
 		closesocket(listenSocket);
 		WSACleanup();
 		return 1;
@@ -93,8 +93,8 @@ int main()
 	{
 		system("cls");
 
-		cout << "\nServer: connected to [" << setfill(' ') << setw(15) << inet_ntoa(remoteHostInfo.sin_addr)
-			<< "] successful...\n\n";
+		cout << "\n     Server: connected to [" << setfill(' ') << setw(15) << inet_ntoa(remoteHostInfo.sin_addr)
+			<< "] successfully!\n\n";
 	}
 
 	closesocket(listenSocket);
@@ -126,11 +126,11 @@ int main()
 
 			cout << "Client: " << dataBuffer << endl;
 
-			const char* md = "Message delivered";
+			const char* md = "   Message delivered successfully";
 
 			if (send(clientSocket, md, (int)strlen(md) + 1, 0) == SOCKET_ERROR)
 			{
-				cerr << "send failed";
+				cerr << "     Message sending failed";
 				closesocket(clientSocket);
 				WSACleanup();
 				return 1;
@@ -138,11 +138,11 @@ int main()
 		}
 		else if (res == 0)
 		{
-			cout << "\nServer: connection closed...\n";
+			cout << "\n     Server: connection closed...\n";
 		}
 		else
 		{
-			cerr << "recv failed";
+			cerr << "   recv failed";
 			closesocket(clientSocket);
 			WSACleanup();
 			return 1;
@@ -154,7 +154,7 @@ int main()
 
 	if (shutdown(clientSocket, SD_SEND))
 	{
-		cerr << "shutdown failed";
+		cerr << "     Server shutdown failed";
 		closesocket(clientSocket);
 		WSACleanup();
 		return 1;
